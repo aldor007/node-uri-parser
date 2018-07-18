@@ -39,6 +39,10 @@
             "dependencies": [
                 "uriparser2"
             ],
+            "cflags": [
+                "-O3",
+                "-Werror"
+            ],
             "actions": [
                 {
                     "action_name": "copy",

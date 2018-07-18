@@ -31,9 +31,6 @@
 #include <tsl/ordered_map.h>
 #include "parsers.hpp"
 
-#define ENCODED_BRACKETS "%5B%5D"
-#define BRACKETS "[]"
-
 enum parseOptions {
     kProtocol = 1,
     kAuth = 1 << 1,
@@ -135,8 +132,6 @@ NAN_METHOD(parse) {
 
         const char *amp = "&", *sum = "=", *semicolon = ";", *separator = amp;
         char *queryParamPairPtr, *queryParam, *queryParamKey, *queryParamValue, *queryParamPtr;
-        bool empty = true;
-        v8::Local<v8::Object> qsSuffix = Nan::New<v8::Object>();
         Nan::DefineOwnProperty(data, Nan::New(search_symbol), Nan::New<v8::String>(query).ToLocalChecked(), attrib);
         query++;
 
@@ -155,30 +150,12 @@ NAN_METHOD(parse) {
         queryParam = strtok_r(query, separator, &queryParamPairPtr);
 
         v8::Local<v8::Object> queryData = Nan::New<v8::Object>();
-        bool arrayBrackets = false;
+        uint16_t len, queryLen;
         while (queryParam) {
             if (*queryParam != *sum) {
-                uint16_t len, queryLen;
-                empty = false;
                 queryLen = strlen(queryParam);
                 queryParamKey = strtok_r(queryParam, sum, &queryParamPtr);
                 len = strlen(queryParamKey);
-                if (len > (sizeof(ENCODED_BRACKETS) - 1) &&
-                        !strncmp(queryParamKey + len - (sizeof(ENCODED_BRACKETS) - 1),
-                                 ENCODED_BRACKETS,
-                                 sizeof(ENCODED_BRACKETS) - 1)) {
-                    arrayBrackets = true;
-                    queryParamKey[len - (sizeof(ENCODED_BRACKETS) - 1)] = '\0';
-                    qsSuffix->Set(URI_LOCAL_STR(queryParamKey), URI_LOCAL_STR(ENCODED_BRACKETS));
-                } else if (len > (sizeof(BRACKETS) - 1) &&
-                        !strncmp(queryParamKey + len - (sizeof(BRACKETS) - 1),
-                                 BRACKETS,
-                                 sizeof(BRACKETS) - 1)) {
-                    arrayBrackets = true;
-                    queryParamKey[len - (sizeof(BRACKETS) - 1)] = '\0';
-                    qsSuffix->Set(URI_LOCAL_STR(queryParamKey), URI_LOCAL_STR(BRACKETS));
-                }
-
                 queryParamValue = strtok_r(NULL, separator, &queryParamPtr);
                 if (queryLen - len > 0) {
                     paramsMap[queryParamKey].push_back(queryParamValue ? queryParamValue: "");
@@ -194,7 +171,7 @@ NAN_METHOD(parse) {
             auto vals = std::move(keyValue.second);
 
             const int arrSize = vals.size();
-            if (arrSize > 1 || (arrayBrackets && qsSuffix->Has(key))) {
+            if (arrSize > 1) {
                 v8::Local<v8::Array> arrVal = Nan::New<v8::Array>(arrSize);
 
                 int i = 0;
@@ -217,12 +194,8 @@ NAN_METHOD(parse) {
             }
         }
 
-        // no need for empty object if the query string is going to be wrong
-        if (!empty) {
+        if (uri.query.len > 0) {
             Nan::DefineOwnProperty(data, Nan::New(query_symbol), queryData, attrib);
-            if (arrayBrackets) {
-                Nan::DefineOwnProperty(data, Nan::New(queryArraySuffix_symbol), qsSuffix, attrib);
-            }
         }
 
         query--;
