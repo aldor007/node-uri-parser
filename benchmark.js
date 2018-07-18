@@ -22,31 +22,31 @@
  * THE SOFTWARE.
  */
 
-var uriparser = require('./bin/uriparser');
-var urlParse = require('url').parse;
+const uriparser = require('./bin/uriparser2');
+const urlParse = require('url').parse;
 
-var repeats = Number(process.argv[2]) || 2000000;
-var urls = {
+const repeats = Number(process.argv[2]) || 2000000;
+const urls = {
     'simple url': 'http://domain.eu/exmaple/path',
     'complex url': 'scheme://user:password@127.0.0.1:1337//p/../a/t/h/?egg=spam&foo=bar#fragment',
     'url with short query string': 'http://domain.eu?a=1&b=2&c=3',
     'url with long query string': 'http://domain.eu?a=1&b=2&c=3&d=4&e=5&f=6&g=7&h=8&1=a&2=b&3=c&4=d&5=e&6=f&7=g&h=8'
 };
 
-for (var name in urls) {
-    var url = urls[name];
+for (const name in urls) {
+    const url = urls[name];
 
     console.log('%s (%s):', name, url);
 
     console.time('  url.parse');
-    for (var i = 0; i < repeats; i++) {
+    for (let i = 0; i < repeats; i++) {
         urlParse(url, true, false);
     }
     console.timeEnd('  url.parse');
 
 
     console.time('  uriparser (nginx)');
-    for (var i = 0; i < repeats; i++) {
+    for (let i = 0; i < repeats; i++) {
         uriparser.parse(url);
     }
     console.timeEnd('  uriparser (nginx)');

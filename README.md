@@ -1,10 +1,12 @@
-[![Build Status](https://travis-ci.org/DreamLab/node-uriparser.svg?branch=master)](https://travis-ci.org/DreamLab/node-uriparser) [![npm version](https://badge.fury.io/js/uriparser.svg)](https://badge.fury.io/js/uriparser) [![downloads badge](http://img.shields.io/npm/dm/uriparser.svg)](https://www.npmjs.org/package/uriparser)
+[![Build Status](https://travis-ci.org/aldor007/node-uriparser.svg?branch=master)](https://travis-ci.org/DreamLab/node-uriparser) [![npm version](https://badge.fury.io/js/uriparser2.svg)](https://badge.fury.io/js/uriparser2) [![downloads badge](http://img.shields.io/npm/dm/uriparser2.svg)](https://www.npmjs.org/package/uriparser2)
 
 
-# node-uriparser
+# node-uriparser2
+
+In active development!
 
 ## About:
-Bindings for non RFC strict NGINX based parser (https://github.com/DreamLab/ngx_url_parser).
+Bindings for non RFC strict NGINX based parser (https://github.com/aldor007/ngx_url_parser).
 
 ## How to build/install:
 ```
@@ -13,7 +15,7 @@ node-gyp configure build
 ```
 or
 ```
-npm install uriparser
+npm install uriparser2
 ```
 
 ## Requirements
@@ -34,7 +36,7 @@ Available options: ````PROTOCOL````, ````AUTH````, ````HOST````, ````PORT````, `
 ## Example:
 ```js
 
-const uriparser = require('uriparser');
+const uriparser = require('uriparser2');
 
 const u = uriparser.parse('http://github.com');
 console.log(u);
@@ -50,7 +52,8 @@ Just run ``./benchmark.js``
 
 ## License:
 ```
-Copyright (C) DreamLab Onet.pl Sp. z o. o.
+Copyright (C) DreamLab Onet.pl Sp. z o. o. 2013-2018
+Copyright (C) Marcin Kaciuba 2018
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

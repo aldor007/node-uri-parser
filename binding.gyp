@@ -1,7 +1,7 @@
 {
     "targets": [
         {
-            "target_name": "uriparser",
+            "target_name": "uriparser2",
             "dependencies": [
                 "libparsers"
             ],
@@ -37,18 +37,18 @@
             "target_name": "after_build",
             "type": "none",
             "dependencies": [
-                "uriparser"
+                "uriparser2"
             ],
             "actions": [
                 {
                     "action_name": "copy",
                     "inputs": [
-                        "<@(PRODUCT_DIR)/uriparser.node"
+                        "<@(PRODUCT_DIR)/uriparser2.node"
                     ],
                     "outputs": [
-                        "<(module_root_dir)/bin/uriparser.node"
+                        "<(module_root_dir)/bin/uriparser2.node"
                     ],
-                    "action": ["cp", "<@(PRODUCT_DIR)/uriparser.node", "<(module_root_dir)/bin/uriparser.node"]
+                    "action": ["cp", "<@(PRODUCT_DIR)/uriparser2.node", "<(module_root_dir)/bin/uriparser2.node"]
                 }
             ]
         }

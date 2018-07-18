@@ -53,7 +53,7 @@ class Parser {
             url.auth.start = NULL;
         }
 
-        virtual ~Parser() {
+        ~Parser() {
         }
 
         enum Status {
@@ -93,7 +93,7 @@ class NgxParser: public Parser {
             url.auth.len  = url_meta.auth_end - url_meta.auth_start;
         }
 
-        virtual ~NgxParser() {
+        ~NgxParser() {
         }
 
     protected:
